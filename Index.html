@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاكاة أزمة: زلزال في الجامعة</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --bg-color: #f4f7f6;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { color: var(--primary-color); margin-bottom: 25px; }
+        .scenario-box {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: right;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            background: #f7fafc;
+            border-color: var(--primary-color);
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+        .feedback.error { background: #fed7d7; color: #9b2c2c; display: block; }
+        .feedback.success { background: #c6f6d5; color: #22543d; display: block; }
+        .prize-card {
+            border: 3px dashed #ecc94b;
+            background: #fefcbf;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            animation: pop 0.5s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>🚨 محاكاة الطوارئ: زلزال في القاعة الدراسية</h1>
+    
+    <div class="scenario-box">
+        أنت تتواجد حالياً داخل قاعة المحاضرات في الدور الثالث بالجامعة، وفجأة بدأت الأرض تهتز بقوة، وتساقطت بعض الديكورات الجبسية من السقف وتأرجحت الإضاءة. ما هو التصرف الفوري والصحيح لحماية نفسك؟
+    </div>
+
+    <div class="options-list">
+        <button class="option-btn" onclick="checkAnswer(0)">[أ] الجري فوراً نحو المصاعد الكهربائية أو السلالم للهروب خارج مبنى الكلية بأقصى سرعة.</button>
+        <button class="option-btn" onclick="checkAnswer(1)">[ب] البقاء في مكانك، الاحتماء تحت طاولة خشبية قوية، وحماية رأسك ورقبتك بيدك (انبطح، احتمِ، وتمسك).</button>
+        <button class="option-btn" onclick="checkAnswer(2)">[ج] الوقوف بجانب النوافذ الزجاجية الكبيرة للاستكشاف ومعرفة ما يحدث في الساحة الخارجية للجامعة.</button>
+        <button class="option-btn" onclick="checkAnswer(3)">[د] التجمع مع زملائك في منتصف القاعة والصراخ لطلب المساعدة من أمن الكلية.</button>
+    </div>
+
+    <div id="feedback-box" class="feedback"></div>
+
+    <div id="prize-box" class="prize-card">
+        <h2>🎉 مبروك! إجابة ذكية ونموذجية</h2>
+        <p>لقد تصرفت بوعي وهدوء وحميت نفسك بالطريقة المعتمدة دولياً أثناء الهزات الأرضية.</p>
+        <hr style="border: 1px dashed #ecc94b;">
+        <h3 style="color: #b7791f; margin-bottom: 5px;">🏆 هدية الامتياز</h3>
+        <p style="font-size: 1.2rem; font-weight: bold; margin-top: 5px; color: #2d3748;">"بطاقة رصيد إضافي +5 درجات في أعمال السنة"</p>
+        <p style="font-size: 0.85rem; color: #718096;">(الرجاء تصوير الشاشة وإرسالها لأستاذ المادة لتوثيق المكافأة)</p>
+    </div>
+</div>
+
+<script>
+    function checkAnswer(selectedIndex) {
+        const feedback = document.getElementById('feedback-box');
+        const prize = document.getElementById('prize-box');
+        
+        // الخيار الصحيح هو الثاني (Index 1) وهو ب
+        if (selectedIndex === 1) {
+            feedback.className = "feedback success";
+            feedback.innerText = "أحسنت! هذا هو التصرف السليم تماماً لمنع الإصابات أثناء الهزة.";
+            prize.style.display = "block";
+        } else {
+            prize.style.display = "none";
+            feedback.className = "feedback error";
+            
+            if (selectedIndex === 0) {
+                feedback.innerText = "خطأ! الجري أثناء الزلزال يعرضك للسقوط، والمصاعد قد تتعطل أو تسقط.";
+            } else if (selectedIndex === 2) {
+                feedback.innerText = "خطأ خطير! النوافذ الزجاجية قد تتناثر وتسبب إصابات بالغة.";
+            } else if (selectedIndex === 3) {
+                feedback.innerText = "خطأ! التجمع العشوائي والصراخ يزيد من الذعر ولا يحميك من الحطام المتساقط.";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
